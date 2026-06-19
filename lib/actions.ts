@@ -201,7 +201,7 @@ export async function createBlogPost(formData: FormData) {
     published_at: published ? new Date().toISOString() : null,
   })
 
-  if (error) throw error
+  if (error) return { error: error.message }
 
   revalidatePath('/blog')
   redirect('/blog')
