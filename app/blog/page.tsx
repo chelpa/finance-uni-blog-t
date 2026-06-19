@@ -1,6 +1,9 @@
 import { Suspense } from 'react'
+import Link from 'next/link'
+import { PenSquare } from 'lucide-react'
 import { DashboardLayout } from '@/components/dashboard-layout'
 import { BlogCard } from '@/components/blog-card'
+import { Button } from '@/components/ui/button'
 import { getProjects, getBlogPosts, getCurrentUser } from '@/lib/actions'
 
 export const metadata = {
@@ -19,11 +22,19 @@ export default async function BlogPage() {
   return (
     <DashboardLayout projects={projects} user={user}>
       <div className="p-4 lg:p-6 space-y-6">
-        <div className="max-w-3xl">
-          <h1 className="text-3xl font-bold tracking-tight">Finance Club Blog</h1>
-          <p className="text-lg text-muted-foreground mt-2 text-pretty">
-            Stay updated with the latest finance news, investment tips, market analysis, and upcoming club events from the University Finance Club.
-          </p>
+        <div className="flex items-start justify-between gap-4">
+          <div className="max-w-2xl">
+            <h1 className="text-3xl font-bold tracking-tight">Finance Club Blog</h1>
+            <p className="text-lg text-muted-foreground mt-2 text-pretty">
+              Stay updated with the latest finance news, investment tips, market analysis, and upcoming club events from the University Finance Club.
+            </p>
+          </div>
+          <Button asChild className="shrink-0">
+            <Link href="/blog/new" className="gap-2">
+              <PenSquare className="h-4 w-4" />
+              New Post
+            </Link>
+          </Button>
         </div>
 
         <Suspense 

@@ -170,3 +170,39 @@ export async function getBlogPost(slug: string) {
   if (error) throw error
   return data
 }
+
+export async function createBlogPost(formData: FormData) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  if (!user) throw new Error('Not authenticated')
+
+  const title = formData.get('title') as string
+  const content = formData.get('content') as string
+  const excerpt = formData.get('excerpt') as string || null
+  const author = formData.get('author') as string
+  const category = formData.get('category') as string
+  const published = formData.get('published') === 'true'
+
+  const slug = title
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-') + '-' + Date.now()
+
+  const { error } = await supabase.from('blog_posts').insert({
+    title,
+    slug,
+    content,
+    excerpt,
+    author,
+    category,
+    published,
+    published_at: published ? new Date().toISOString() : null,
+  })
+
+  if (error) throw error
+
+  revalidatePath('/blog')
+  redirect('/blog')
+}
