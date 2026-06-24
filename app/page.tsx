@@ -11,9 +11,10 @@ import { getTasks, getProjects, getBlogPosts, getCurrentUser } from '@/lib/actio
 
 export default async function DashboardPage() {
   const user = await getCurrentUser()
-  
+
   if (!user) {
-    redirect('/auth/login')
+    // redirect('/auth/login')
+    redirect('/landing')
   }
 
   const [tasks, projects, blogPosts] = await Promise.all([
@@ -75,7 +76,7 @@ export default async function DashboardPage() {
                     </span>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <Link 
+                    <Link
                       href={`/blog/${post.slug}`}
                       className="font-medium hover:text-primary hover:underline line-clamp-1"
                     >
